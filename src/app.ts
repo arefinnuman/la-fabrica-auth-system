@@ -1,5 +1,6 @@
 import cors from 'cors'
 import express, { Request, Response } from 'express'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
 import usersRouter from './app/modules/users/users.route'
 
 const app = express()
@@ -18,5 +19,7 @@ app.use('/api/v1/users/', usersRouter)
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello Madridistaaa!')
 })
+
+app.use(globalErrorHandler)
 
 export default app

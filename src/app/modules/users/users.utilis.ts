@@ -1,5 +1,3 @@
-// const lastUserId = 0 // Assuming you initialize the lastUserId with 0 initially
-
 import { User } from './users.module'
 
 export const findLastUseId = async () => {

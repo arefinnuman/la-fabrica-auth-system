@@ -14,7 +14,7 @@ const logger = createLogger({
   level: 'info',
   format: combine(
     label({
-      label: 'successlog',
+      label: 'successLogs',
     }),
     timestamp(),
     myFormat
@@ -40,7 +40,7 @@ const errorLogger = createLogger({
   level: 'error',
   format: combine(
     label({
-      label: 'errorlog',
+      label: 'errorLogs',
     }),
     timestamp(),
     myFormat

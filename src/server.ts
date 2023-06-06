@@ -1,47 +1,47 @@
-import { Server } from 'http'
-import mongoose from 'mongoose'
-import app from './app'
-import config from './app/config'
-import { errorLogger, logger } from './app/config/logger'
+import { Server } from 'http';
+import mongoose from 'mongoose';
+import app from './app';
+import config from './config';
+import { errorLogger, logger } from './config/logger';
 
-const databaseUrl = config.database_url as string
-const usingPort = config.port
+const databaseUrl = config.database_url as string;
+const usingPort = config.port;
 
 process.on('uncaughtException', error => {
-  errorLogger.error(error)
-  process.exit(1)
-})
+  errorLogger.error(error);
+  process.exit(1);
+});
 
-let server: Server
+let server: Server;
 
 async function bootstrap() {
   try {
-    await mongoose.connect(databaseUrl)
-    logger.info(`Database Connected`)
+    await mongoose.connect(databaseUrl);
+    logger.info(`Database Connected`);
 
     server = app.listen(usingPort, () => {
-      logger.info(`La Fabrica running on port ${usingPort}`)
-    })
+      logger.info(`La Fabrica running on port ${usingPort}`);
+    });
   } catch (error) {
-    errorLogger.error(`Failed to connect`, error)
+    errorLogger.error(`Failed to connect`, error);
   }
 
   process.on('unhandledRejection', error => {
     if (server) {
       server.close(() => {
-        errorLogger.error(error)
-        process.exit(1)
-      })
+        errorLogger.error(error);
+        process.exit(1);
+      });
     } else {
-      process.exit(1)
+      process.exit(1);
     }
-  })
+  });
 }
-bootstrap()
+bootstrap();
 
 process.on(`SIGTERM`, () => {
-  logger.info(`SIGTERM is received`)
+  logger.info(`SIGTERM is received`);
   if (server) {
-    server.close()
+    server.close();
   }
-})
+});

@@ -2,12 +2,12 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { Error } from 'mongoose';
 import { ZodError } from 'zod';
-import ApiError from '../../../errors/ApiError';
-import handleValidationError from '../../../errors/ValidationError';
-import handleZodError from '../../../errors/ZodError';
-import { IGenericErrorMessage } from '../../../interfaces/IGenericErrorMessage';
 import config from '../../config';
 import { errorLogger } from '../../config/logger';
+import ApiError from '../../errors/ApiError';
+import handleValidationError from '../../errors/ValidationError';
+import handleZodError from '../../errors/ZodError';
+import { IGenericErrorMessage } from '../../interfaces/IGenericErrorMessage';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,

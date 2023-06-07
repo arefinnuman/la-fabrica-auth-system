@@ -1,4 +1,4 @@
-import config from '../../../config';
+import config from '../../../config/index';
 import { IUser } from './user.interface';
 import { generateUserId } from './user.utilis';
 import { User } from './users.model';
@@ -13,7 +13,7 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
 
   const createdUser = await User.create(user);
 
-  if (!createUser) {
+  if (!createdUser) {
     throw new Error(`Failed to create user`);
   }
   return createdUser;

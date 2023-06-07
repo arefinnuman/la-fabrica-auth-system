@@ -1,7 +1,7 @@
 import { Server } from 'http';
 import mongoose from 'mongoose';
 import app from './app';
-import config from './config';
+import config from './config/index';
 import { errorLogger, logger } from './config/logger';
 
 const databaseUrl = config.database_url as string;

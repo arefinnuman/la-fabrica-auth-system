@@ -18,11 +18,11 @@ export type IAcademicSemesterTitles = 'Autumn' | 'Summer' | 'Fall';
 
 export type IAcademicSemesterCodes = '01' | '02' | '03';
 
-export interface IAcademicSemester {
+export type IAcademicSemester = {
   title: IAcademicSemesterTitles;
   year: number;
   code: IAcademicSemesterCodes;
   startMonth: IAcademicSemesterMonths;
   endMonth: IAcademicSemesterMonths;
-}
+};
 export type AcademicSemesterModel = Model<IAcademicSemester, object>;

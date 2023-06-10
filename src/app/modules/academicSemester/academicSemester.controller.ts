@@ -52,12 +52,21 @@ const getSingleSemester = catchAsync(
     const id = req.params.id;
 
     const result = await AcademicSemesterService.getSingleSemester(id);
-    sendResponse<IAcademicSemester>(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: `Semester Data `,
-      data: result,
-    });
+
+    if (result === null) {
+      sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
+        success: false,
+        message: `${id} not found in Database`,
+      });
+    } else {
+      sendResponse<IAcademicSemester>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: `Semester Data `,
+        data: result,
+      });
+    }
 
     next();
   }

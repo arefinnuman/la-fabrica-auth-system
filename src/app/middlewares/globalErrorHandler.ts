@@ -7,6 +7,7 @@ import { errorLogger } from '../../config/logger';
 import ApiError from '../../errors/ApiError';
 import handleValidationError from '../../errors/ValidationError';
 import handleZodError from '../../errors/ZodError';
+import handleCastError from '../../errors/handleCastError';
 import { IGenericErrorMessage } from '../../interfaces/IGenericErrorMessage';
 
 const globalErrorHandler: ErrorRequestHandler = (
@@ -22,6 +23,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   let statusCode = 500;
   let message = 'Something went wrong !';
   let errorMessages: IGenericErrorMessage[] = [];
+
   // Validation Error
   if (error?.name === 'ValidationError') {
     const simplifiedError = handleValidationError(error);
@@ -37,6 +39,15 @@ const globalErrorHandler: ErrorRequestHandler = (
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
   }
+
+  //  Cast Error
+  else if (error?.name === 'CastError') {
+    const simplifiedError = handleCastError(error);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
+  }
+
   // Api Error
   else if (error instanceof ApiError) {
     statusCode = error?.statusCode;

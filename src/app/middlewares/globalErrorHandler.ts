@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler, Request, Response } from 'express';
 import { Error } from 'mongoose';
 import { ZodError } from 'zod';
 import config from '../../config';
@@ -13,8 +13,7 @@ import { IGenericErrorMessage } from '../../interfaces/IGenericErrorMessage';
 const globalErrorHandler: ErrorRequestHandler = (
   error,
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   config.env === 'development'
     ? console.log(`Global Error Handler ~~`, error)
@@ -81,8 +80,6 @@ const globalErrorHandler: ErrorRequestHandler = (
     errorMessages,
     stack: config.env !== 'production' ? error?.stack : undefined,
   });
-
-  next();
 };
 
 export default globalErrorHandler;

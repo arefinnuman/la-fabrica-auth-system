@@ -21,7 +21,6 @@ const createSemester = catchAsync(
       message: `Semester Created Successfully`,
       data: result,
     });
-
     next();
   }
 );
@@ -67,7 +66,34 @@ const getSingleSemester = catchAsync(
         data: result,
       });
     }
+    next();
+  }
+);
 
+const updateSemester = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const updatedData = req.body;
+
+    const result = await AcademicSemesterService.updateSemester(
+      id,
+      updatedData
+    );
+
+    if (result === null) {
+      sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
+        success: false,
+        message: `${id} not found in Database`,
+      });
+    } else {
+      sendResponse<IAcademicSemester>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: `Semester Data Updated`,
+        data: result,
+      });
+    }
     next();
   }
 );
@@ -76,4 +102,5 @@ export const AcademicSemesterController = {
   createSemester,
   getAllSemester,
   getSingleSemester,
+  updateSemester,
 };

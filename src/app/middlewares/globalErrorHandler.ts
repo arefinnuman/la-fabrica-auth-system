@@ -1,5 +1,8 @@
 /* eslint-disable no-unused-expressions */
-import { ErrorRequestHandler, Request, Response } from 'express';
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { Error } from 'mongoose';
 import { ZodError } from 'zod';
 import config from '../../config';
@@ -13,11 +16,12 @@ import { IGenericErrorMessage } from '../../interfaces/IGenericErrorMessage';
 const globalErrorHandler: ErrorRequestHandler = (
   error,
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   config.env === 'development'
-    ? console.log(`Global Error Handler ~~`, error)
-    : errorLogger.error(`Global Error Handler ~~`);
+    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, { error })
+    : errorLogger.error(`🐱‍🏍 globalErrorHandler ~~`, error);
 
   let statusCode = 500;
   let message = 'Something went wrong !';
@@ -39,7 +43,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     errorMessages = simplifiedError.errorMessages;
   }
 
-  //  Cast Error
+  // Cast Error
   else if (error?.name === 'CastError') {
     const simplifiedError = handleCastError(error);
     statusCode = simplifiedError.statusCode;
@@ -60,7 +64,8 @@ const globalErrorHandler: ErrorRequestHandler = (
         ]
       : [];
   }
-  // Regular Error
+
+  //  Regular Error
   else if (error instanceof Error) {
     message = error?.message;
     errorMessages = error?.message

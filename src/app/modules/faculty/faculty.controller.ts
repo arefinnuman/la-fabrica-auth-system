@@ -4,20 +4,20 @@ import catchAsync from '../../../config/catchAsync';
 import sendResponse from '../../../config/sendResponse';
 import { paginationFields } from '../../../constants/paginations';
 import pick from '../../../interfaces/pick';
-import { studentFilterableFields } from './student.constant';
-import { IStudent } from './student.interface';
-import { StudentService } from './student.service';
+import { facultyFilterableFields } from './faculty.constant';
+import { IFaculty } from './faculty.interface';
+import { FacultyService } from './faculty.service';
 
-const getAllStudents = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, studentFilterableFields);
+const getAllFaculties = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, facultyFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
 
-  const result = await StudentService.getAllStudents(
+  const result = await FacultyService.getAllFaculties(
     filters,
     paginationOptions
   );
 
-  sendResponse<IStudent[]>(res, {
+  sendResponse<IFaculty[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: `Student Data`,
@@ -26,11 +26,10 @@ const getAllStudents = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getSingleStudent = catchAsync(async (req: Request, res: Response) => {
+const getSingleFaculty = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
 
-  const result = await StudentService.getSingleStudent(id);
-
+  const result = await FacultyService.getSingleFaculty(id);
   if (result === null) {
     sendResponse(res, {
       statusCode: httpStatus.NOT_FOUND,
@@ -38,7 +37,7 @@ const getSingleStudent = catchAsync(async (req: Request, res: Response) => {
       message: `${id} not found in Database`,
     });
   } else {
-    sendResponse<IStudent>(res, {
+    sendResponse<IFaculty>(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: `Student Data`,
@@ -47,11 +46,11 @@ const getSingleStudent = catchAsync(async (req: Request, res: Response) => {
   }
 });
 
-const updateStudent = catchAsync(async (req: Request, res: Response) => {
+const updateFaculty = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updatedData = req.body;
 
-  const result = await StudentService.updateStudent(id, updatedData);
+  const result = await FacultyService.updateFaculty(id, updatedData);
 
   if (result === null) {
     sendResponse(res, {
@@ -60,31 +59,30 @@ const updateStudent = catchAsync(async (req: Request, res: Response) => {
       message: `${id} not found in Database`,
     });
   } else {
-    sendResponse<IStudent>(res, {
+    sendResponse<IFaculty>(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: `Student Data Updated`,
+      message: `Faculty Data Updated`,
       data: result,
     });
   }
 });
 
-const deleteStudent = catchAsync(async (req: Request, res: Response) => {
+const deleteFaculty = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
-  const result = await StudentService.deleteStudent(id);
+  const result = await FacultyService.deleteFaculty(id);
 
-  sendResponse<IStudent>(res, {
+  sendResponse<IFaculty>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Student deleted successfully !',
-    data: undefined,
+    message: 'Faculty deleted successfully !',
+    data: result,
   });
-  return result;
 });
 
-export const StudentController = {
-  getAllStudents,
-  getSingleStudent,
-  updateStudent,
-  deleteStudent,
+export const FacultyController = {
+  getAllFaculties,
+  getSingleFaculty,
+  updateFaculty,
+  deleteFaculty,
 };

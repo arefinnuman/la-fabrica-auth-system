@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
 import { SortOrder } from 'mongoose';
-import { IConstantFilters } from '../../../constants/constantFilters';
 import ApiError from '../../../errors/ApiError';
 import { PaginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/IGenericResponse';
+import { IConstantFilters } from '../../../interfaces/constantFilters';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { studentSearchableFields } from './student.constant';
 import { IStudent } from './student.interface';
@@ -82,7 +82,7 @@ const updateStudent = async (
   id: string,
   payload: Partial<IStudent>
 ): Promise<IStudent | null> => {
-  const isExist = await Student.findOne({ id });
+  const isExist = await Student.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, `Student (${id}) not found`);
   }

@@ -1,21 +1,40 @@
+import { Model, Types } from 'mongoose';
+import { IManagingDepartment } from '../managingDepartment/managingDepartment.interface';
+
+
+export type UserName = {
+  firstName: string;
+  lastName: string;
+  middleName: string;
+};
+
 export type IAdmin = {
   id: string;
-  name: {
-    firstName: string;
-    middleName?: string;
-    lastName: string;
-  };
-  dateOfBirth: string;
+  name: UserName;
+  profileImage: string;
+  dateOfBirth?: string;
   email: string;
   contactNo: string;
   emergencyContactNo: string;
-  gender: string;
-  permanentAddress: string;
-  presentAddress: string;
-  bloodGroup?: string;
-  managementDepartment: string;
+  gender?: 'male' | 'female';
+  permanentAddress?: string;
+  presentAddress?: string;
+  bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+
+  managementDepartment: Types.ObjectId | IManagingDepartment;
   designation: string;
-  profileImage?: string;
-  createdAt: Date;
-  updatedAt: Date;
+};
+
+export type AdminModel = Model<IAdmin, Record<string, unknown>>;
+
+export type IAdminFilters = {
+  searchTerm?: string;
+  id?: string;
+  email?: string;
+  contactNo?: string;
+  emergencyContactNo?: string;
+  gender?: 'male' | 'female';
+  bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+  managementDepartment?: string;
+  designation?: string;
 };

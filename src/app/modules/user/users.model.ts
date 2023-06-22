@@ -1,12 +1,11 @@
+/* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-this-alias */
 import bcrypt from 'bcrypt';
-import httpStatus from 'http-status';
 import { Schema, model } from 'mongoose';
 import config from '../../../config';
-import ApiError from '../../../errors/ApiError';
-import { IUser, IUserMethods, UserModel } from './user.interface';
+import { IUser, UserModel } from './user.interface';
 
-const userSchema = new Schema<IUser, Record<string, unknown>, IUserMethods>(
+const userSchema = new Schema<IUser, UserModel>(
   {
     id: {
       type: String,
@@ -22,7 +21,7 @@ const userSchema = new Schema<IUser, Record<string, unknown>, IUserMethods>(
       required: true,
       select: 0,
     },
-    needsChangePassword: {
+    needsPasswordChange: {
       type: Boolean,
       default: true,
     },
@@ -46,22 +45,19 @@ const userSchema = new Schema<IUser, Record<string, unknown>, IUserMethods>(
     },
   }
 );
-userSchema.methods.isUserExist = async function (
+userSchema.statics.isUserExist = async function (
   id: string
-): Promise<Partial<IUser | null>> {
-  const user = await User.findOne(
+): Promise<Pick<
+  IUser,
+  'id' | 'password' | 'role' | 'needsPasswordChange'
+> | null> {
+  return await User.findOne(
     { id },
-    { id: 1, password: 1, needsChangePassword: 1 }
+    { id: 1, password: 1, role: 1, needsPasswordChange: 1 }
   );
-
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, `Not found`);
-  }
-
-  return user;
 };
 
-userSchema.methods.isPasswordMatched = async function (
+userSchema.statics.isPasswordMatched = async function (
   givenPassword: string,
   savedPassword: string
 ): Promise<boolean> {

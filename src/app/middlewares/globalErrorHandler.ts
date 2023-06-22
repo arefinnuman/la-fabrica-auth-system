@@ -6,7 +6,6 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { Error } from 'mongoose';
 import { ZodError } from 'zod';
 import config from '../../config';
-import { errorLogger } from '../../config/logger';
 import ApiError from '../../errors/ApiError';
 import handleValidationError from '../../errors/ValidationError';
 import handleZodError from '../../errors/ZodError';
@@ -21,7 +20,7 @@ const globalErrorHandler: ErrorRequestHandler = (
 ) => {
   config.env === 'development'
     ? console.log(`🐱‍🏍 globalErrorHandler ~~`, { error })
-    : errorLogger.error(`🐱‍🏍 globalErrorHandler ~~`, error);
+    : console.error(`🐱‍🏍 globalErrorHandler ~~`, error);
 
   let statusCode = 500;
   let message = 'Something went wrong !';

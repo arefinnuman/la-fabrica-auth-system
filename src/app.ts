@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
@@ -8,6 +9,7 @@ const app = express();
 
 // MiddleWares
 app.use(cors());
+app.use(cookieParser());
 
 // parser
 app.use(express.json());
